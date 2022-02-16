@@ -3,31 +3,34 @@
     <div class="profile">
       <h2>
         {{ fullname }} <br>
-        <small><b>@{{ user.username }}</b></small>
+        <small><b>@{{ state.user.username }}</b></small>
       </h2>
-      <p><b>Followers</b>: {{ followers }}</p>
-      <p v-if="user.isAdmin" class="role-label">Admin</p>
+      <p><b>Followers</b>: {{ state.followers }}</p>
+      <p v-if="state.user.isAdmin" class="role-label">Admin</p>
 
       <div class="new__tweet">
-        <CreateTweet :userTweetsCount="user.tweets.length" @saveTweet="savePostTweet"/>
+        <CreateTweet :userTweetsCount="state.user.tweets.length" @saveTweet="savePostTweet"/>
       </div>
     </div>
     <div class="tweets">
       <h2>Tweets</h2>
       <br>
-      <TweetItem v-for="tweet in user.tweets" :key="tweet.id" :tweet="tweet" :username="user.username" @favorite="fav"/>
+      <TweetItem v-for="tweet in state.user.tweets" :key="tweet.id" :tweet="tweet" :username="state.user.username" @favorite="fav"/>
     </div>
   </div>
 </template>
 
 <script>
+
+import {reactive, computed} from 'vue';
 import TweetItem from "@/components/TweetItem";
 import CreateTweet from "@/components/CreateTweet";
+
 export default {
   name: "UserProfile",
   components: {CreateTweet, TweetItem},
-  data() {
-    return {
+  setup() {
+    const state = reactive({
       followers: 0,
       user: {
         id: 1,
@@ -41,6 +44,28 @@ export default {
           {id: 2, content: 'Some content section 1'}
         ]
       }
+    });
+
+    const fullname = computed(() => `${state.user.firstname} ${state.user.lastname}`);
+
+    function followUser() {
+      state.followers += 1;
+    }
+
+    function fav(id) {
+      console.log('Fav id', id);
+    }
+
+    function savePostTweet(newTweet) {
+      state.user.tweets.unshift(newTweet);
+    }
+
+    return {
+      state,
+      fullname,
+      followUser,
+      fav,
+      savePostTweet
     }
   },
   watch: {
@@ -48,22 +73,6 @@ export default {
       if (newFollowersCount > oldFollowersCount) {
         console.log(`${this.user.username} followerlari soni oshdi`)
       }
-    }
-  },
-  methods: {
-    followUser() {
-      this.followers += 1;
-    },
-    fav(id) {
-      console.log('Fav id', id);
-    },
-    savePostTweet(newTweet) {
-      this.user.tweets.unshift(newTweet);
-    }
-  },
-  computed: {
-    fullname() {
-      return `${this.user.firstname} ${this.user.lastname}`;
     }
   },
   mounted() {
