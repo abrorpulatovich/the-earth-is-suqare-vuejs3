@@ -1,14 +1,14 @@
 <template>
   <form @submit.prevent="saveNewTweet">
     <label for="tweet">Your tweet ({{ tweetLettersCount }}/180)</label> <br>
-    <textarea id="tweet" cols="56" rows="4" v-model="tweetForm.tweet" :class="['tweettext', {exceed: tweetLettersCount > 180}]"></textarea>
+    <textarea id="tweet" cols="56" rows="4" v-model="state.tweetForm.tweet" :class="['tweettext', {exceed: tweetLettersCount > 180}]"></textarea>
 
     <br>
     <br>
 
     <label for="type">Type</label> <br>
-    <select v-model="tweetForm.type" id="type" class="tweettype">
-      <option v-for="tweetType in tweetTypes" :value="tweetType.value" :key="tweetType.name">{{ tweetType.name }}</option>
+    <select v-model="state.tweetForm.type" id="type" class="tweettype">
+      <option v-for="tweetType in state.tweetTypes" :value="tweetType.value" :key="tweetType.name">{{ tweetType.name }}</option>
     </select>
 
     <br>
@@ -19,16 +19,12 @@
 </template>
 
 <script>
+import {computed, reactive} from "vue";
+
 export default {
   name: "CreateTweet",
-  props: {
-    userTweetsCount: {
-      type: Number,
-      required: true
-    }
-  },
-  data() {
-    return {
+  setup(props, context) {
+    const state = reactive({
       tweetForm: {
         tweet: '',
         type: 'instant'
@@ -37,23 +33,31 @@ export default {
         {value: 'draft', name: 'Draft'},
         {value: 'instant', name: 'Instant'}
       ]
-    }
-  },
-  methods: {
-    saveNewTweet() {
-      if (this.tweetForm.type === 'instant') {
-        this.$emit('saveTweet', {
+    });
+
+    const tweetLettersCount = computed(() => state.tweetForm.tweet.length);
+
+    function saveNewTweet() {
+      if (state.tweetForm.type === 'instant') {
+        context.emit('saveTweet', {
           id: this.userTweetsCount,
-          content: this.tweetForm.tweet
+          content: state.tweetForm.tweet
         })
-        this.tweetForm.tweet = '';
-        this.tweetForm.type = 'instant';
+        state.tweetForm.tweet = '';
+        state.tweetForm.type = 'instant';
       }
     }
+
+    return {
+      state,
+      tweetLettersCount,
+      saveNewTweet
+    }
   },
-  computed: {
-    tweetLettersCount() {
-      return this.tweetForm.tweet.length;
+  props: {
+    userTweetsCount: {
+      type: Number,
+      required: true
     }
   }
 }
