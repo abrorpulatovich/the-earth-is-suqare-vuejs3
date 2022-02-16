@@ -1,17 +1,13 @@
 <template>
   <div>
-    <UserProfile />
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
 
-import UserProfile from "./components/UserProfile";
 export default {
-  name: 'App',
-  components: {
-    UserProfile
-  }
+  name: 'App'
 }
 </script>
 

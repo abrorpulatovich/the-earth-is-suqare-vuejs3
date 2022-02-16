@@ -21,8 +21,8 @@
 </template>
 
 <script>
-import TweetItem from "./TweetItem";
-import CreateTweet from "./CreateTweet";
+import TweetItem from "@/components/TweetItem";
+import CreateTweet from "@/components/CreateTweet";
 export default {
   name: "UserProfile",
   components: {CreateTweet, TweetItem},
