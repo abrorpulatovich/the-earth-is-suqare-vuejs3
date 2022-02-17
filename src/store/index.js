@@ -1,12 +1,10 @@
 import { createStore } from 'vuex'
+import {UserModule} from "./User";
 
-export default createStore({
-  state: {
-  },
-  mutations: {
-  },
-  actions: {
-  },
+const store = createStore({
   modules: {
+    User: UserModule
   }
 })
+
+export default store;
