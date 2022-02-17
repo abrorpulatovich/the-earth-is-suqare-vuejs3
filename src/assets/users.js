@@ -2,40 +2,40 @@ export const users = [
   {
     "id": 1,
     "username": "_MitchellRomney",
-    "firstName": "Mitchell",
-    "lastName": "Romney",
+    "firstname": "Mitchell",
+    "lastname": "Romney",
     "email": "mitchellromney@theearthissquare.com",
     "isAdmin": true,
-    "twoots": [
-      { "id": 1, "content": "Twotter is Amazing!" },
+    "tweets": [
+      { "id": 1, "content": "Twitter is Amazing!" },
       { "id": 2, "content": "Don't forget to subscriber to The Earth is Square!" }
     ]
   },
   {
     "id": 2,
     "username": "JColeNC",
-    "firstName": "J.",
-    "lastName": "Cole",
+    "firstname": "J.",
+    "lastname": "Cole",
     "email": null,
     "isAdmin": false,
-    "twoots": []
+    "tweets": []
   },
   {
     "id": 3,
     "username": "kurtisconner",
-    "firstName": "kurtis",
-    "lastName": "conner",
+    "firstname": "kurtis",
+    "lastname": "conner",
     "email": null,
     "isAdmin": false,
-    "twoots": []
+    "tweets": []
   },
   {
     "id": 4,
     "username": "boburnham",
-    "firstName": "Bo",
-    "lastName": "Burnham",
+    "firstname": "Bo",
+    "lastname": "Burnham",
     "email": null,
     "isAdmin": false,
-    "twoots": []
+    "tweets": []
   }
 ];

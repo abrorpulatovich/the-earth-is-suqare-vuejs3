@@ -2,7 +2,7 @@
   <div>
     <div class="profile">
       <h2>
-        {{ fullname }} <br>
+        {{ fullname }} . ({{ userId }})<br>
         <small><b>@{{ state.user.username }}</b></small>
       </h2>
       <p><b>Followers</b>: {{ state.followers }}</p>
@@ -17,33 +17,31 @@
       <br>
       <TweetItem v-for="tweet in state.user.tweets" :key="tweet.id" :tweet="tweet" :username="state.user.username" @favorite="fav"/>
     </div>
+
+    <div style="clear:both"></div>
+    <hr>
+    <router-link :to="{name: 'Home'}">Home</router-link>
   </div>
 </template>
 
 <script>
 
 import {reactive, computed} from 'vue';
+import {useRoute} from 'vue-router';
 import TweetItem from "@/components/TweetItem";
 import CreateTweet from "@/components/CreateTweet";
+import {users} from "../assets/users";
 
 export default {
   name: "UserProfile",
   components: {CreateTweet, TweetItem},
   setup() {
+    const route = useRoute();
+    const userId = computed(() => route.params.userId);
+
     const state = reactive({
       followers: 0,
-      user: {
-        id: 1,
-        username: '_abrorkhan',
-        firstname: 'Abror',
-        lastname: 'Eshkabilov',
-        email: 'abror.eshkabilov@gmail.com',
-        isAdmin: true,
-        tweets: [
-          {id: 1, content: 'Some content section 1'},
-          {id: 2, content: 'Some content section 1'}
-        ]
-      }
+      user: users[userId.value - 1] || users[0]
     });
 
     const fullname = computed(() => `${state.user.firstname} ${state.user.lastname}`);
@@ -61,6 +59,7 @@ export default {
     }
 
     return {
+      userId,
       state,
       fullname,
       followUser,
